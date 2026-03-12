@@ -1,4 +1,4 @@
-#  Miko – AI-Powered Telegram Assistant
+# 😸Miko – AI-Powered Telegram Assistant
 
 Miko is an AI-powered Telegram bot built with **TypeScript** and **Bun** that integrates Claude AI for research and decision-making. Evaluate GitHub repos as businesses, explore market opportunities, and prep for job applications — all from a single chat.
 
