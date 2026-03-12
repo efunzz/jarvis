@@ -1,6 +1,6 @@
-# 🤖 Jarvis – AI-Powered Telegram Assistant
+#  Miko – AI-Powered Telegram Assistant
 
-Jarvis is an AI-powered Telegram bot built with **TypeScript** and **Bun** that integrates Claude AI for research and decision-making. Evaluate GitHub repos as businesses, explore market opportunities, and prep for job applications — all from a single chat.
+Miko is an AI-powered Telegram bot built with **TypeScript** and **Bun** that integrates Claude AI for research and decision-making. Evaluate GitHub repos as businesses, explore market opportunities, and prep for job applications — all from a single chat.
 
 The project demonstrates building a bot with **AI integration, multi-API orchestration, smart intent routing, and persistent user context**.
 
