@@ -115,7 +115,3 @@ The project demonstrates building a bot with **AI integration, multi-API orchest
    ```bash
    bun start
    ```
-
-## 🍿 Demo
-
-(Video demo coming soon)
