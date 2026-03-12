@@ -1,0 +1,16 @@
+{
+  "name": "jarvis",
+  "module": "src/bot.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
+    "grammy": "^1.41.1"
+  }
+}
