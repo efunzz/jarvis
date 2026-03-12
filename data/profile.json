@@ -1,0 +1,65 @@
+{
+  "name": "Irfan",
+  "title": "Software Engineer",
+  "summary": "Software engineer with experience in mobile development, AI integration, and full-stack TypeScript applications. Building AI-powered tools and developer tooling.",
+  "skills": {
+    "languages": ["TypeScript", "JavaScript", "Python", "SQL"],
+    "platforms_and_infra": ["Docker", "Docker Compose", "GitHub Actions", "GitHub Container Registry", "Firebase"],
+    "collaboration_and_automation": ["Telegram Bot Development (grammY)", "GitHub API", "AI-powered workflow automation"],
+    "databases": ["PostgreSQL", "GraphQL", "Supabase"],
+    "observability": ["Prometheus", "Grafana", "Sentry"],
+    "ai_integration": ["Claude API", "Gemini API", "OpenAI API"],
+    "frontend": ["React", "React Native", "Angular", "Expo"]
+  },
+  "experience": [
+    {
+      "company": "Hiddentao Labs",
+      "role": "Mobile Developer",
+      "highlights": [
+        "Designed CI/CD pipelines using GitHub Actions for automated iOS and Android builds, distributing test builds via Firebase App Distribution",
+        "Led cross-platform mobile development using React Native, translating Figma designs into production-ready components",
+        "Implemented automated code quality checks with linting, type checking, and pre-commit hooks"
+      ]
+    },
+    {
+      "company": "Backend/Infrastructure Projects",
+      "role": "Software Engineer",
+      "highlights": [
+        "Containerized backend services using Docker with multi-architecture builds deployed to GitHub Container Registry",
+        "Integrated Sentry for application observability including error tracking and structured logging",
+        "Developed GraphQL API with PostgreSQL, including database migrations and automated test suites"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Jarvis",
+      "description": "AI-Powered Productivity Bot",
+      "tech": ["TypeScript", "Bun", "Docker", "Prometheus", "Grafana"],
+      "highlights": [
+        "Built Telegram bot integrating Claude AI for automated GitHub repo analysis, market research, and job preparation workflow",
+        "Containerized with Docker Compose including Prometheus metrics collection and Grafana dashboards for monitoring",
+        "CI/CD pipeline with GitHub Actions for linting, Docker builds, and deployment to GitHub Container Registry"
+      ]
+    },
+    {
+      "name": "Visimind",
+      "description": "AI Diagram Generator",
+      "tech": ["TypeScript", "Bun", "Gemini API"],
+      "highlights": [
+        "Text-to-diagram tool using Google Gemini for instant flowchart, mindmap, and org chart generation",
+        "Multi-tool architecture with SEO-optimized landing pages per diagram type"
+      ]
+    },
+    {
+      "name": "Expo Starter CLI",
+      "description": "Developer Tooling CLI",
+      "tech": ["TypeScript", "Bun"],
+      "highlights": [
+        "Developer tooling CLI that scaffolds React Native projects with pre-configured CI/CD pipelines and code quality automation",
+        "Feature overlay system for composable project templates (auth, GraphQL, push notifications)"
+      ]
+    }
+  ],
+  "github": "https://github.com/niceprogramming"
+}

@@ -1,0 +1,71 @@
+import type { Context } from "grammy";
+import { analyze } from "../services/claude";
+import { sendLongMessage } from "../bot";
+
+const routerSystemPrompt = `You are Jarvis, a Telegram AI assistant that helps evaluate and grow indie apps toward profitability.
+
+You have four capabilities:
+1. REVIEW - Analyze a GitHub repo as a business (needs an owner/repo like "excalidraw/excalidraw" or a GitHub URL)
+2. TREND - Analyze a niche/market for indie app opportunities (needs a topic like "ai writing tools")
+3. JOBPREP - Analyze a job description against the user's profile (needs a job description text — usually a long message with requirements, responsibilities, qualifications)
+4. UPDATEPROFILE - Update the user's stored career profile (needs an update like "add Python to my skills")
+
+When the user's message matches one of these, respond with ONLY a JSON object (no other text):
+{"intent": "review", "arg": "owner/repo"}
+{"intent": "trend", "arg": "the topic"}
+{"intent": "jobprep", "arg": "the full job description text"}
+{"intent": "updateprofile", "arg": "the update request"}
+
+Detection hints:
+- If the message contains job requirements, responsibilities, qualifications, or looks like a pasted job listing → jobprep
+- If the message says to add/update/change something about their skills, experience, or profile → updateprofile
+
+If the user's message is general conversation, a question, or doesn't clearly map to any capability, just respond naturally as Jarvis — a sharp, friendly indie hacker advisor. Keep responses concise. Use Telegram-compatible markdown (*bold*, not # headers).
+
+If the user seems to want an analysis but is missing info, ask them for the missing piece.`;
+
+export async function handleChat(ctx: Context): Promise<void> {
+  const text = ctx.message?.text;
+  if (!text) return;
+
+  try {
+    const response = await analyze(routerSystemPrompt, text);
+
+    // Check if Claude returned a routing JSON
+    const trimmed = response.trim();
+    if (trimmed.startsWith("{")) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (parsed.intent === "review" && parsed.arg) {
+          // Rewrite the message text and delegate to /review handler
+          ctx.message!.text = `/review ${parsed.arg}`;
+          const { handleReview } = await import("./review");
+          return handleReview(ctx);
+        }
+        if (parsed.intent === "trend" && parsed.arg) {
+          ctx.message!.text = `/trend ${parsed.arg}`;
+          const { handleTrend } = await import("./trend");
+          return handleTrend(ctx);
+        }
+        if (parsed.intent === "jobprep" && parsed.arg) {
+          ctx.message!.text = `/jobprep ${parsed.arg}`;
+          const { handleJobprep } = await import("./jobprep");
+          return handleJobprep(ctx);
+        }
+        if (parsed.intent === "updateprofile" && parsed.arg) {
+          ctx.message!.text = `/updateprofile ${parsed.arg}`;
+          const { handleUpdateProfile } = await import("./updateprofile");
+          return handleUpdateProfile(ctx);
+        }
+      } catch {
+        // Not valid JSON, treat as normal response
+      }
+    }
+
+    // Regular conversational response
+    await sendLongMessage(ctx, response);
+  } catch (error) {
+    console.error("Chat error:", error);
+    await ctx.reply("Something went wrong. Try again or use /review or /trend directly.");
+  }
+}

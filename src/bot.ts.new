@@ -1,0 +1,70 @@
+import { Bot, type Context } from "grammy";
+import { config } from "./config";
+import { handleReview } from "./commands/review";
+import { handleTrend } from "./commands/trend";
+import { handleJobprep } from "./commands/jobprep";
+import { handleUpdateProfile } from "./commands/updateprofile";
+import { handleChat } from "./commands/chat";
+
+const bot = new Bot(config.telegramBotToken);
+
+const MAX_MESSAGE_LENGTH = 4096;
+
+export async function sendLongMessage(
+  ctx: Context,
+  text: string,
+): Promise<void> {
+  if (text.length <= MAX_MESSAGE_LENGTH) {
+    try {
+      await ctx.reply(text, { parse_mode: "Markdown" });
+    } catch {
+      // Markdown parse failed, send as plain text
+      await ctx.reply(text);
+    }
+    return;
+  }
+
+  // Split on double newlines, respecting max length
+  const chunks: string[] = [];
+  let current = "";
+
+  for (const paragraph of text.split("\n\n")) {
+    if (current.length + paragraph.length + 2 > MAX_MESSAGE_LENGTH) {
+      if (current) chunks.push(current.trim());
+      current = paragraph;
+    } else {
+      current += (current ? "\n\n" : "") + paragraph;
+    }
+  }
+  if (current) chunks.push(current.trim());
+
+  for (const chunk of chunks) {
+    try {
+      await ctx.reply(chunk, { parse_mode: "Markdown" });
+    } catch {
+      await ctx.reply(chunk);
+    }
+  }
+}
+
+bot.command("ping", (ctx) => ctx.reply("Pong!"));
+bot.command("review", handleReview);
+bot.command("trend", handleTrend);
+bot.command("jobprep", handleJobprep);
+bot.command("updateprofile", handleUpdateProfile);
+bot.command("start", (ctx) =>
+  ctx.reply(
+    "Welcome to Jarvis! Commands:\n" +
+      "/review owner/repo - Business analysis of a GitHub repo\n" +
+      "/trend topic - Niche market analysis\n" +
+      "/jobprep <JD> - Analyze a job description against your profile\n" +
+      "/updateprofile <update> - Update your stored profile\n" +
+      "/ping - Check if bot is alive",
+  ),
+);
+
+bot.on("message:text", handleChat);
+
+bot.start({
+  onStart: () => console.log("Jarvis bot is running..."),
+});
